@@ -20,6 +20,13 @@ async function run(){
         const delearCollection = client.db("dreamsvehicle").collection("delear");
 
 
+        app.get('/product',async(req,res)=>{
+            const query={}
+            const cursor=productsCollection.find(query)
+            const products=await cursor.toArray()
+            res.send(products)
+        })
+        
         
     }
     finally{}
