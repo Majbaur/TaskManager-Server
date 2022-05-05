@@ -165,6 +165,12 @@ async function run(){
             const result = await orderCollection.insertOne(order);
             res.send(result);
         })
+        app.get('/delear',async(req,res)=>{
+            const query={}
+            const cursor=delearCollection.find(query)
+            const delear=await cursor.toArray()
+            res.send(delear)
+        })
     }
     finally{}
 }
