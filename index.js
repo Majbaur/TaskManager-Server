@@ -33,7 +33,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
     try{
         await client.connect()
-        const productsCollection = client.db("dreamsvehicle").collection("product");
+        const productCollection = client.db("dreamsvehicle").collection("product");
         const delearCollection = client.db("dreamsvehicle").collection("delear");
         const orderCollection = client.db("dreamsvehicle").collection("order");
 
@@ -116,7 +116,7 @@ async function run(){
         // productS API
         app.get('/product', async (req, res) => {
             const query = {};
-            const cursor = productsCollection.find(query);
+            const cursor = productCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
         });
@@ -125,14 +125,14 @@ async function run(){
             const id = req.params.id;
             console.log(id);
             const query = { _id: ObjectId(id) };
-            const product = await productsCollection.findOne(query);
+            const product = await productCollection.findOne(query);
             res.send(product);
         });
 
         // POST
         app.post('/product', async (req, res) => {
-            const newproduct = req.body;
-            const result = await productsCollection.insertOne(newproduct);
+            const newProduct = req.body;
+            const result = await productCollection.insertOne(newProduct);
             res.send(result);
         });
 
@@ -140,7 +140,7 @@ async function run(){
         app.delete('/product/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await productsCollection.deleteOne(query);
+            const result = await productCollection.deleteOne(query);
             res.send(result);
         });
 
