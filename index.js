@@ -87,7 +87,7 @@ async function run(){
 
             const updatedDoc = {
                 $set: {
-                    quantity: updatedItem.quantity,
+                    Quantity: updatedItem.Quantity,
                     sale: updatedItem.sale
                 }
             }
@@ -125,13 +125,20 @@ async function run(){
 
         })
 
-        // app.post("/addnewitem" , async(req,res)=>
-        // {
-        //     const newItem = req.body;
-        //     const result = await productCollection.insertOne(newItem)
+        // POST MAHI
+        app.post('/item',async (req, res)=>{
+            const newProduct=req.body
+            const result = await productCollection.insertOne(newProduct)
+        })
 
-        //     res.send(result);
-        // })
+
+        app.post("/addnewitem" , async(req,res)=>
+        {
+            const newItem = req.body;
+            const result = await productCollection.insertOne(newItem)
+
+            res.send(result);
+        })
 
 
         // app.post("/deleteitem" , async(req , res)=>
