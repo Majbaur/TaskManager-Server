@@ -36,7 +36,6 @@ async function run(){
         const productCollection = client.db("dreamsvehicle").collection("product");
         const delearCollection = client.db("dreamsvehicle").collection("delear");
 
-
         app.get('/items', async (req, res) => {
             const query = {};
             const cursor = productCollection.find(query);
@@ -155,6 +154,15 @@ async function run(){
             const result = await productCollection.deleteOne(query);
             res.send(result);
         });
+
+        //post ADD user Majba
+        app.post('/service',async (req, res) => {
+            const newService = req.body;
+            const result = await productCollection.insertOne(newService);
+            res.send(result)
+        })
+
+
 
     }
 
