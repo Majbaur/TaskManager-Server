@@ -161,9 +161,6 @@ async function run(){
             const result = await productCollection.insertOne(newService);
             res.send(result)
         })
-
-
-
     }
 
     finally {
