@@ -10,21 +10,21 @@ const app =express()
 app.use(cors())
 app.use(express.json())
 
-// function verifyJWT(req, res, next) {
-//     const authHeader = req.headers.authorization;
-//     if (!authHeader) {
-//         return res.status(401).send({ message: 'unauthorized access' });
-//     }
-//     const token = authHeader.split(' ')[1];
-//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-//         if (err) {
-//             return res.status(403).send({ message: 'Forbidden access' });
-//         }
-//         console.log('decoded', decoded);
-//         req.decoded = decoded;
-//         next();
-//     })
-// }
+function verifyJWT(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send({ message: 'unauthorized access' });
+    }
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).send({ message: 'Forbidden access' });
+        }
+        console.log('decoded', decoded);
+        req.decoded = decoded;
+        next();
+    })
+}
 
 
  
@@ -35,6 +35,7 @@ async function run(){
         await client.connect()
         const productCollection = client.db("dreamsvehicle").collection("product");
         const delearCollection = client.db("dreamsvehicle").collection("delear");
+        const addedItemCollection = client.db("dreamsvehicle").collection("addedItem");
 
         app.get('/items', async (req, res) => {
             const query = {};
@@ -124,20 +125,6 @@ async function run(){
 
         })
 
-        // POST MAHI
-        app.post('/item',async (req, res)=>{
-            const newProduct=req.body
-            const result = await productCollection.insertOne(newProduct)
-        })
-
-
-        app.post("/addnewitem" , async(req,res)=>
-        {
-            const newItem = req.body;
-            const result = await productCollection.insertOne(newItem)
-
-            res.send(result);
-        })
 
 
         // app.post("/deleteitem" , async(req , res)=>
@@ -154,13 +141,27 @@ async function run(){
             const result = await productCollection.deleteOne(query);
             res.send(result);
         });
-
+        
         //post ADD user Majba
-        app.post('/service',async (req, res) => {
-            const newService = req.body;
-            const result = await productCollection.insertOne(newService);
+        app.get('/addedItem' , async (req, res)=>{
+            const email=req.query.email
+            const query={email: email}
+            const cursor=addedItemCollection.find(query)
+            const addedItems=await cursor.toArray()
+            res.send(addedItems)
+        })
+        
+        app.post('/addedItem',async (req, res) => {
+            const newAddedItem = req.body;
+            const result = await addedItemCollection.insertOne(newAddedItem);
             res.send(result)
         })
+        app.delete('/addedItem/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await addedItemCollection.deleteOne(query);
+            res.send(result);
+        });
     }
 
     finally {
