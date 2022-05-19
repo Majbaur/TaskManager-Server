@@ -37,110 +37,7 @@ async function run(){
         const delearCollection = client.db("taskManager").collection("delear");
         const addedItemCollection = client.db("taskManager").collection("addedItem");
 
-        app.get('/items', async (req, res) => {
-            const query = {};
-            const cursor = productCollection.find(query);
-
-            const page = parseInt(req.query.page);
-            const size = parseInt(req.query.size);
-
-            let items;
-
-            if (page || size) 
-            {
-
-                items = await cursor.skip(page*size).limit(size).toArray();
-            }
-
-            else {
-                items = await cursor.toArray();
-            }
-
-            res.send(items)
-        })
-
-
-        app.get('/itemsCount', async (req, res) => {
-            const query = {};
-            const cursor = productCollection.find(query);
-            const count = await productCollection.estimatedDocumentCount();
-            res.send({ count })
-        })
-
-        app.get("/item/:id", async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) }
-            const result = await productCollection.findOne(query);
-            res.send(result);
-        })
-
-
-        app.put("/delivered/:id", async (req, res) => {
-            const id = req.params.id;
-            const updatedItem = req.body;
-
-            console.log(updatedItem);
-
-            const filter = { _id: ObjectId(id) };
-
-            const options = { upsert: true };
-
-            const updatedDoc = {
-                $set: {
-                    Quantity: updatedItem.Quantity,
-                    sale: updatedItem.sale
-                }
-            }
-
-            const result = await productCollection.updateOne(filter, updatedDoc, options);
-
-            res.send(result);
-
-        })
-        app.get('/delear',async(req,res)=>{
-            const query={}
-            const cursor=delearCollection.find(query)
-            const delear=await cursor.toArray()
-            res.send(delear)
-        })
-
-        app.put("/restock/:id", async (req, res) => {
-            const id = req.params.id;
-            const updatedItem = req.body;
-
-
-            const filter = { _id: ObjectId(id) };
-
-            const options = { upsert: true };
-
-            const updatedDoc = {
-                $set: {
-                    Quantity: updatedItem.Quantity
-                }
-            }
-
-            const result = await productCollection.updateOne(filter, updatedDoc, options);
-
-            res.send(result);
-
-        })
-
-
-
-        // app.post("/deleteitem" , async(req , res)=>
-        // {
-        //     const id = req.body;
-
-        //     const result = await productCollection.deleteOne({ "_id" : ObjectId(id)})
-
-        //     res.send(result)
-        // })
-        app.delete('/product/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await productCollection.deleteOne(query);
-            res.send(result);
-        });
+       
         
         //post ADD user Majba
         app.get('/addedItem' , async (req, res)=>{
@@ -172,9 +69,9 @@ run().catch(console.dir)
 
 
 app.get('/',(req,res)=>{
-    res.send('Products is Updating and waiting for New Arrival Products')
+    res.send('Taks is Updating')
 })
 
 app.listen(port,()=>{
-    console.log('Products is Updating on Website',port)
+    console.log('Taks is Updating on Website',port)
 })
