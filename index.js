@@ -28,14 +28,14 @@ function verifyJWT(req, res, next) {
 
 
  
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.oiyjm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6sahv.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run(){
     try{
         await client.connect()
-        const productCollection = client.db("dreamsvehicle").collection("product");
-        const delearCollection = client.db("dreamsvehicle").collection("delear");
-        const addedItemCollection = client.db("dreamsvehicle").collection("addedItem");
+        const productCollection = client.db("taskManager").collection("product");
+        const delearCollection = client.db("taskManager").collection("delear");
+        const addedItemCollection = client.db("taskManager").collection("addedItem");
 
         app.get('/items', async (req, res) => {
             const query = {};
