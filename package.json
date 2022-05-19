@@ -1,5 +1,5 @@
 {
-  "name": "assignment-11-server",
+  "name": "TaskManager-Server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
